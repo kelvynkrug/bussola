@@ -40,21 +40,18 @@ Sistema de gerenciamento escolar desenvolvido em Laravel com API RESTful para ge
 
 4. **Configure o banco de dados**
 
-    # Execute as migrações para criar as tabelas
-
     ```bash
+    # Execute as migrações para criar as tabelas
     docker-compose exec app php artisan migrate
     ```
 
-    # Execute os seeders para popular o banco com dados iniciais
-
     ```bash
+    # Execute os seeders para popular o banco com dados iniciais
     docker-compose exec app php artisan db:seed
     ```
 
-    # Execute os testes automatizados
-
     ```bash
+    # Execute os testes automatizados
     docker-compose exec app php artisan test
     ```
 
