@@ -110,7 +110,6 @@ class CourseControllerTest extends TestCase
     public function test_cannot_delete_course_with_enrollments(): void
     {
         $course = Course::factory()->create();
-        // Create an enrollment for this course
         $student = \App\Models\Student::factory()->create();
         \App\Models\Enrollment::create([
             'student_id' => $student->id,

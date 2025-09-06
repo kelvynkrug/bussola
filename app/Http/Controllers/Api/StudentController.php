@@ -45,7 +45,6 @@ class StudentController extends Controller
     {
         $query = Student::with('courses');
 
-        // Filter by course if provided
         if ($request->has('course_id')) {
             $query->whereHas('courses', function ($q) use ($request) {
                 $q->where('courses.id', $request->course_id);
@@ -118,7 +117,6 @@ class StudentController extends Controller
                 'email' => $validated['email'],
             ]);
 
-            // Attach to courses
             $student->courses()->attach($validated['course_ids']);
 
             $student->load('courses');
@@ -258,7 +256,6 @@ class StudentController extends Controller
                 'email' => $validated['email'] ?? $student->email,
             ]);
 
-            // Update course relationships if provided
             if (isset($validated['course_ids'])) {
                 $student->courses()->sync($validated['course_ids']);
             }

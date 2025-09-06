@@ -68,17 +68,14 @@ class EnrollmentController extends Controller
     {
         $query = Enrollment::with(['student', 'course']);
 
-        // Filter by student if provided
         if ($request->has('student_id')) {
             $query->where('student_id', $request->student_id);
         }
 
-        // Filter by course if provided
         if ($request->has('course_id')) {
             $query->where('course_id', $request->course_id);
         }
 
-        // Filter by status if provided
         if ($request->has('status')) {
             $query->where('status', $request->status);
         }
@@ -129,7 +126,6 @@ class EnrollmentController extends Controller
                 'course_id' => 'required|exists:courses,id',
             ]);
 
-            // Check if enrollment already exists
             $existingEnrollment = Enrollment::where('student_id', $validated['student_id'])
                 ->where('course_id', $validated['course_id'])
                 ->first();

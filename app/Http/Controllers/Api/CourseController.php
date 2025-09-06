@@ -258,7 +258,6 @@ class CourseController extends Controller
             ], 404);
         }
 
-        // Check if course has any enrollments
         if ($course->enrollments()->exists()) {
             return response()->json([
                 'success' => false,

@@ -45,7 +45,6 @@ class SubjectController extends Controller
     {
         $query = Subject::with('courses');
 
-        // Filter by course if provided
         if ($request->has('course_id')) {
             $query->whereHas('courses', function ($q) use ($request) {
                 $q->where('courses.id', $request->course_id);
@@ -115,7 +114,6 @@ class SubjectController extends Controller
                 'workload' => $validated['workload'],
             ]);
 
-            // Attach to courses if provided
             if (isset($validated['course_ids'])) {
                 $subject->courses()->attach($validated['course_ids']);
             }
@@ -254,7 +252,6 @@ class SubjectController extends Controller
                 'workload' => $validated['workload'] ?? $subject->workload,
             ]);
 
-            // Update course relationships if provided
             if (isset($validated['course_ids'])) {
                 $subject->courses()->sync($validated['course_ids']);
             }
