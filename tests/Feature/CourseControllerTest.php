@@ -48,7 +48,7 @@ class CourseControllerTest extends TestCase
         $response->assertStatus(201)
                 ->assertJson([
                     'success' => true,
-                    'message' => 'Course created successfully'
+                    'message' => 'CREATE_SUCCESS'
                 ]);
 
         $this->assertDatabaseHas('courses', $courseData);
@@ -81,12 +81,12 @@ class CourseControllerTest extends TestCase
             'workload' => 150
         ];
 
-        $response = $this->putJson("/api/courses/{$course->id}", $updateData);
+        $response = $this->patchJson("/api/courses/{$course->id}", $updateData);
 
         $response->assertStatus(200)
                 ->assertJson([
                     'success' => true,
-                    'message' => 'Course updated successfully'
+                    'message' => 'UPDATE_SUCCESS'
                 ]);
 
         $this->assertDatabaseHas('courses', array_merge(['id' => $course->id], $updateData));
@@ -101,7 +101,7 @@ class CourseControllerTest extends TestCase
         $response->assertStatus(200)
                 ->assertJson([
                     'success' => true,
-                    'message' => 'Course deleted successfully'
+                    'message' => 'DELETE_SUCCESS'
                 ]);
 
         $this->assertDatabaseMissing('courses', ['id' => $course->id]);
@@ -112,7 +112,9 @@ class CourseControllerTest extends TestCase
         $course = Course::factory()->create();
         // Create an enrollment for this course
         $student = \App\Models\Student::factory()->create();
-        $course->students()->attach($student->id, [
+        \App\Models\Enrollment::create([
+            'student_id' => $student->id,
+            'course_id' => $course->id,
             'status' => 'active',
             'enrolled_at' => now()
         ]);
@@ -122,7 +124,7 @@ class CourseControllerTest extends TestCase
         $response->assertStatus(422)
                 ->assertJson([
                     'success' => false,
-                    'message' => 'Cannot delete course with active enrollments'
+                    'message' => 'DELETE_FAILED'
                 ]);
     }
 
@@ -131,6 +133,10 @@ class CourseControllerTest extends TestCase
         $response = $this->postJson('/api/courses', []);
 
         $response->assertStatus(422)
+                ->assertJson([
+                    'success' => false,
+                    'message' => 'CREATE_FAILED'
+                ])
                 ->assertJsonStructure([
                     'success',
                     'message',
