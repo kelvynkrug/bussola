@@ -25,13 +25,20 @@ Sistema de gerenciamento escolar desenvolvido em Laravel com API RESTful para ge
     git clone https://github.com/kelvynkrug/bussola.git
     ```
 
-2. **Execute com Docker Compose**
+2. **Configure o ambiente**
+
+    ```bash
+    # Copie o arquivo de exemplo e configure as variáveis de ambiente
+    cp .env.example .env
+    ```
+
+3. **Execute com Docker Compose**
 
     ```bash
     docker-compose up --build -d
     ```
 
-3. **Acesse a aplicação**
+4. **Acesse a aplicação**
     - **API**: http://localhost:8000
     - **Documentação Swagger**: http://localhost:8000/api/documentation
     - **Mailpit (E-mails)**: http://localhost:8025
