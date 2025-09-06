@@ -1,0 +1,1708 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Sistema de Gerenciamento Escolar API",
+        "description": "API RESTful para gerenciamento de cursos, disciplinas, alunos e matrículas de uma escola.",
+        "contact": {
+            "email": "admin@escola.com"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8000",
+            "description": "Servidor de Desenvolvimento"
+        }
+    ],
+    "paths": {
+        "/api/courses": {
+            "get": {
+                "tags": [
+                    "Courses"
+                ],
+                "summary": "getAll - Listar todos os cursos",
+                "description": "Retorna uma lista de todos os cursos cadastrados no sistema",
+                "operationId": "64c23c70e7c5a08098cbde7b94163d25",
+                "responses": {
+                    "200": {
+                        "description": "Lista de cursos retornada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Course"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Courses"
+                ],
+                "summary": "create - Criar novo curso",
+                "description": "Cria um novo curso no sistema",
+                "operationId": "ffc00ddf114f0b1389c6f9865caecc8c",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "description",
+                                    "workload"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Sistemas de Informação"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "Curso de graduação em Sistemas de Informação"
+                                    },
+                                    "workload": {
+                                        "type": "integer",
+                                        "example": 3200
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Curso criado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Course"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Dados de validação inválidos"
+                    }
+                }
+            }
+        },
+        "/api/courses/{id}": {
+            "get": {
+                "tags": [
+                    "Courses"
+                ],
+                "summary": "search - Buscar curso específico",
+                "description": "Retorna os detalhes de um curso específico pelo ID",
+                "operationId": "fcfa0e72418bad46ac07376f1588ff04",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID do curso",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Curso encontrado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Course"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Curso não encontrado"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Courses"
+                ],
+                "summary": "delete - Excluir curso",
+                "description": "Exclui um curso do sistema (apenas se não tiver matrículas)",
+                "operationId": "3cc4507795804d322c29b7ab84ec87d4",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID do curso",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Curso excluído com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Course deleted successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Curso não encontrado"
+                    },
+                    "422": {
+                        "description": "Não é possível excluir curso com matrículas ativas"
+                    }
+                }
+            },
+            "patch": {
+                "tags": [
+                    "Courses"
+                ],
+                "summary": "update - Atualizar curso",
+                "description": "Atualiza os dados de um curso existente",
+                "operationId": "6490208eb1bd5778b9493acf14521ba9",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID do curso",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Sistemas de Informação - Atualizado"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "Curso de graduação em Sistemas de Informação - Descrição atualizada"
+                                    },
+                                    "workload": {
+                                        "type": "integer",
+                                        "example": 3400
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Curso atualizado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Course"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Curso não encontrado"
+                    },
+                    "422": {
+                        "description": "Dados de validação inválidos"
+                    }
+                }
+            }
+        },
+        "/api/enrollments": {
+            "get": {
+                "tags": [
+                    "Enrollments"
+                ],
+                "summary": "getAll - Listar todas as matrículas",
+                "description": "Retorna uma lista de todas as matrículas no sistema, com opções de filtro",
+                "operationId": "530749523a5c430cd4719f21bffea561",
+                "parameters": [
+                    {
+                        "name": "student_id",
+                        "in": "query",
+                        "description": "ID do aluno para filtrar matrículas",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "course_id",
+                        "in": "query",
+                        "description": "ID do curso para filtrar matrículas",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "status",
+                        "in": "query",
+                        "description": "Status da matrícula (active, suspended, cancelled)",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "active",
+                                "suspended",
+                                "cancelled"
+                            ]
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lista de matrículas retornada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Enrollment"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Enrollments"
+                ],
+                "summary": "create - Realizar matrícula",
+                "description": "Realiza a matrícula de um aluno em um curso e dispara e-mail de confirmação",
+                "operationId": "95ccb856b1f38f3bc3c594af80d0a014",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "student_id",
+                                    "course_id"
+                                ],
+                                "properties": {
+                                    "student_id": {
+                                        "description": "ID do aluno",
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "course_id": {
+                                        "description": "ID do curso",
+                                        "type": "integer",
+                                        "example": 1
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Matrícula realizada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Student enrolled successfully"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Enrollment"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Dados de validação inválidos ou aluno já matriculado no curso"
+                    }
+                }
+            }
+        },
+        "/api/enrollments/{id}": {
+            "get": {
+                "tags": [
+                    "Enrollments"
+                ],
+                "summary": "search - Buscar matrícula específica",
+                "description": "Retorna os detalhes de uma matrícula específica pelo ID",
+                "operationId": "304ea55f3bf34e8658bdc6369e910f4b",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID da matrícula",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Matrícula encontrada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Enrollment"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Matrícula não encontrada"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Enrollments"
+                ],
+                "summary": "delete - Excluir matrícula",
+                "description": "Exclui uma matrícula do sistema",
+                "operationId": "e6fdbfc1a6ade91bd3cb36029282dfac",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID da matrícula",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Matrícula excluída com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Enrollment deleted successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Matrícula não encontrada"
+                    }
+                }
+            },
+            "patch": {
+                "tags": [
+                    "Enrollments"
+                ],
+                "summary": "update - Atualizar matrícula",
+                "description": "Atualiza o status de uma matrícula existente",
+                "operationId": "042150148f1edcd88fcdf6acc5f4a077",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID da matrícula",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "status": {
+                                        "description": "Novo status da matrícula",
+                                        "type": "string",
+                                        "enum": [
+                                            "active",
+                                            "suspended",
+                                            "cancelled"
+                                        ],
+                                        "example": "active"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Matrícula atualizada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Enrollment updated successfully"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Enrollment"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Matrícula não encontrada"
+                    },
+                    "422": {
+                        "description": "Dados de validação inválidos"
+                    }
+                }
+            }
+        },
+        "/api/enrollments/{id}/suspend": {
+            "post": {
+                "tags": [
+                    "Enrollments"
+                ],
+                "summary": "suspend - Trancar matrícula",
+                "description": "Tranca uma matrícula ativa, alterando seu status para 'suspended'",
+                "operationId": "b098bb0b2978731593af36bc046af5a8",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID da matrícula",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Matrícula trancada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Enrollment suspended successfully"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Enrollment"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Matrícula não encontrada"
+                    },
+                    "422": {
+                        "description": "Matrícula já está trancada"
+                    }
+                }
+            }
+        },
+        "/api/enrollments/{id}/reactivate": {
+            "post": {
+                "tags": [
+                    "Enrollments"
+                ],
+                "summary": "reactivate - Reativar matrícula",
+                "description": "Reativa uma matrícula trancada, alterando seu status para 'active'",
+                "operationId": "77afef90817df70ee046e50376cdada2",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID da matrícula",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Matrícula reativada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Enrollment reactivated successfully"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Enrollment"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Matrícula não encontrada"
+                    },
+                    "422": {
+                        "description": "Apenas matrículas trancadas podem ser reativadas"
+                    }
+                }
+            }
+        },
+        "/api/students": {
+            "get": {
+                "tags": [
+                    "Students"
+                ],
+                "summary": "getAll - Listar todos os alunos",
+                "description": "Retorna uma lista de todos os alunos cadastrados no sistema, com opção de filtrar por curso",
+                "operationId": "4058fbd3a2e6fa73b57d5ef611d9f4c3",
+                "parameters": [
+                    {
+                        "name": "course_id",
+                        "in": "query",
+                        "description": "ID do curso para filtrar alunos",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lista de alunos retornada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Student"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Students"
+                ],
+                "summary": "create - Criar novo aluno",
+                "description": "Cria um novo aluno no sistema, vinculando-o a pelo menos um curso",
+                "operationId": "e4b73e302154ba27aa82067b9968122f",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "cpf",
+                                    "birth_date",
+                                    "email",
+                                    "course_ids"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "João Silva"
+                                    },
+                                    "cpf": {
+                                        "description": "CPF com 11 dígitos",
+                                        "type": "string",
+                                        "example": "12345678901"
+                                    },
+                                    "birth_date": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "1995-05-15"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "joao.silva@email.com"
+                                    },
+                                    "course_ids": {
+                                        "description": "IDs dos cursos para vincular o aluno (mínimo 1)",
+                                        "type": "array",
+                                        "items": {
+                                            "type": "integer"
+                                        },
+                                        "example": [
+                                            1,
+                                            2
+                                        ]
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Aluno criado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Student created successfully"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Student"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Dados de validação inválidos"
+                    }
+                }
+            }
+        },
+        "/api/students/{id}": {
+            "get": {
+                "tags": [
+                    "Students"
+                ],
+                "summary": "search - Buscar aluno específico",
+                "description": "Retorna os detalhes de um aluno específico pelo ID",
+                "operationId": "fae470e25b9aca94414b3e803976b546",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID do aluno",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Aluno encontrado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Student"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Aluno não encontrado"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Students"
+                ],
+                "summary": "delete - Excluir aluno",
+                "description": "Exclui um aluno do sistema",
+                "operationId": "c6084db1f890598b9c811178f1712619",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID do aluno",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Aluno excluído com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Student deleted successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Aluno não encontrado"
+                    }
+                }
+            },
+            "patch": {
+                "tags": [
+                    "Students"
+                ],
+                "summary": "update - Atualizar aluno",
+                "description": "Atualiza os dados de um aluno existente",
+                "operationId": "58449a6bdd81438ec6275c60a05cb6a8",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID do aluno",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "João Silva Santos"
+                                    },
+                                    "cpf": {
+                                        "description": "CPF com 11 dígitos",
+                                        "type": "string",
+                                        "example": "12345678901"
+                                    },
+                                    "birth_date": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "1995-05-15"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "joao.santos@email.com"
+                                    },
+                                    "course_ids": {
+                                        "description": "IDs dos cursos para vincular o aluno",
+                                        "type": "array",
+                                        "items": {
+                                            "type": "integer"
+                                        },
+                                        "example": [
+                                            1,
+                                            2,
+                                            3
+                                        ]
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Aluno atualizado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Student updated successfully"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Student"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Aluno não encontrado"
+                    },
+                    "422": {
+                        "description": "Dados de validação inválidos"
+                    }
+                }
+            }
+        },
+        "/api/students/cpf/{cpf}": {
+            "get": {
+                "tags": [
+                    "Students"
+                ],
+                "summary": "findByCpf - Buscar aluno por CPF",
+                "description": "Busca um aluno pelo CPF e retorna seus dados pessoais + curso(s) matriculado(s)",
+                "operationId": "6b2475d85229493661f63109cab23052",
+                "parameters": [
+                    {
+                        "name": "cpf",
+                        "in": "path",
+                        "description": "CPF do aluno (11 dígitos)",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "12345678901"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Aluno encontrado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Student"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Aluno não encontrado"
+                    }
+                }
+            }
+        },
+        "/api/students/{id}/attach-course": {
+            "post": {
+                "tags": [
+                    "Students"
+                ],
+                "summary": "attachToCourse - Vincular aluno a curso",
+                "description": "Vincula um aluno existente a um curso adicional",
+                "operationId": "2541bb51f154620279d875df0c08fdf1",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID do aluno",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "course_id"
+                                ],
+                                "properties": {
+                                    "course_id": {
+                                        "description": "ID do curso",
+                                        "type": "integer",
+                                        "example": 1
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Aluno vinculado ao curso com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Student enrolled in course successfully"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Student"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Aluno não encontrado"
+                    },
+                    "422": {
+                        "description": "Dados de validação inválidos ou aluno já matriculado no curso"
+                    }
+                }
+            }
+        },
+        "/api/subjects": {
+            "get": {
+                "tags": [
+                    "Subjects"
+                ],
+                "summary": "getAll - Listar todas as disciplinas",
+                "description": "Retorna uma lista de todas as disciplinas cadastradas no sistema, com opção de filtrar por curso",
+                "operationId": "dc9408fdc53481ace9b32aaff8cee4a5",
+                "parameters": [
+                    {
+                        "name": "course_id",
+                        "in": "query",
+                        "description": "ID do curso para filtrar disciplinas",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lista de disciplinas retornada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Subject"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Subjects"
+                ],
+                "summary": "create - Criar nova disciplina",
+                "description": "Cria uma nova disciplina no sistema, com opção de vincular a cursos",
+                "operationId": "01c17b0b74fb6d631fb3f60b69f44417",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "description",
+                                    "workload"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Introdução à Administração"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "Fundamentos básicos de administração"
+                                    },
+                                    "workload": {
+                                        "type": "integer",
+                                        "example": 60
+                                    },
+                                    "course_ids": {
+                                        "description": "IDs dos cursos para vincular a disciplina",
+                                        "type": "array",
+                                        "items": {
+                                            "type": "integer"
+                                        },
+                                        "example": [
+                                            1,
+                                            2
+                                        ]
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Disciplina criada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Subject created successfully"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Subject"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Dados de validação inválidos"
+                    }
+                }
+            }
+        },
+        "/api/subjects/{id}": {
+            "get": {
+                "tags": [
+                    "Subjects"
+                ],
+                "summary": "search - Buscar disciplina específica",
+                "description": "Retorna os detalhes de uma disciplina específica pelo ID",
+                "operationId": "21b759bb143d6a0747bdbf57d99a7c47",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID da disciplina",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Disciplina encontrada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Subject"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Disciplina não encontrada"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Subjects"
+                ],
+                "summary": "delete - Excluir disciplina",
+                "description": "Exclui uma disciplina do sistema",
+                "operationId": "a139b9a412747643d8c3e8163a6c485e",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID da disciplina",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Disciplina excluída com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Subject deleted successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Disciplina não encontrada"
+                    }
+                }
+            },
+            "patch": {
+                "tags": [
+                    "Subjects"
+                ],
+                "summary": "update - Atualizar disciplina",
+                "description": "Atualiza os dados de uma disciplina existente",
+                "operationId": "4e3c1a35f4c66a76519d31bb85ae4afe",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID da disciplina",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Introdução à Administração - Atualizada"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "Fundamentos básicos de administração - Descrição atualizada"
+                                    },
+                                    "workload": {
+                                        "type": "integer",
+                                        "example": 80
+                                    },
+                                    "course_ids": {
+                                        "description": "IDs dos cursos para vincular a disciplina",
+                                        "type": "array",
+                                        "items": {
+                                            "type": "integer"
+                                        },
+                                        "example": [
+                                            1,
+                                            2,
+                                            3
+                                        ]
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Disciplina atualizada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Subject updated successfully"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Subject"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Disciplina não encontrada"
+                    },
+                    "422": {
+                        "description": "Dados de validação inválidos"
+                    }
+                }
+            }
+        },
+        "/api/subjects/{id}/attach-course": {
+            "post": {
+                "tags": [
+                    "Subjects"
+                ],
+                "summary": "attachToCourse - Vincular disciplina a curso",
+                "description": "Vincula uma disciplina existente a um curso",
+                "operationId": "1be5bac67da13aba46ad581ada35546a",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID da disciplina",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "course_id"
+                                ],
+                                "properties": {
+                                    "course_id": {
+                                        "description": "ID do curso",
+                                        "type": "integer",
+                                        "example": 1
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Disciplina vinculada ao curso com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Subject attached to course successfully"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Subject"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Disciplina não encontrada"
+                    },
+                    "422": {
+                        "description": "Dados de validação inválidos ou disciplina já vinculada ao curso"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Course": {
+                "title": "Course",
+                "description": "Modelo de Curso",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Computer Science"
+                    },
+                    "description": {
+                        "type": "string",
+                        "example": "A comprehensive computer science program"
+                    },
+                    "workload": {
+                        "type": "integer",
+                        "example": 120
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "subjects": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Subject"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "Subject": {
+                "title": "Subject",
+                "description": "Modelo de Disciplina",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Introduction to Programming"
+                    },
+                    "description": {
+                        "type": "string",
+                        "example": "Basic programming concepts"
+                    },
+                    "workload": {
+                        "type": "integer",
+                        "example": 40
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "courses": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Course"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "Student": {
+                "title": "Student",
+                "description": "Modelo de Aluno",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "João Silva"
+                    },
+                    "cpf": {
+                        "type": "string",
+                        "example": "12345678901"
+                    },
+                    "birth_date": {
+                        "type": "string",
+                        "format": "date",
+                        "example": "1995-03-15"
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "example": "joao.silva@email.com"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "courses": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Course"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "Enrollment": {
+                "title": "Enrollment",
+                "description": "Modelo de Matrícula",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "student_id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "course_id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "status": {
+                        "type": "string",
+                        "enum": [
+                            "active",
+                            "suspended",
+                            "cancelled"
+                        ],
+                        "example": "active"
+                    },
+                    "enrolled_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "suspended_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "nullable": true
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "student": {
+                        "$ref": "#/components/schemas/Student"
+                    },
+                    "course": {
+                        "$ref": "#/components/schemas/Course"
+                    }
+                },
+                "type": "object"
+            },
+            "Error": {
+                "title": "Error",
+                "description": "Modelo de Erro",
+                "properties": {
+                    "success": {
+                        "type": "boolean",
+                        "example": false
+                    },
+                    "message": {
+                        "type": "string",
+                        "example": "Error message"
+                    },
+                    "errors": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "schema": "Schemas",
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "Schemas": {
+                "type": "array",
+                "items": {
+                    "type": "string"
+                }
+            },
+            "Success": {
+                "title": "Success",
+                "description": "Modelo de Sucesso",
+                "properties": {
+                    "success": {
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "message": {
+                        "type": "string",
+                        "example": "Operation completed successfully"
+                    },
+                    "data": {
+                        "type": "object"
+                    }
+                },
+                "type": "object"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Courses",
+            "description": "Operações relacionadas a cursos"
+        },
+        {
+            "name": "Enrollments",
+            "description": "Operações relacionadas a matrículas"
+        },
+        {
+            "name": "Students",
+            "description": "Operações relacionadas a alunos"
+        },
+        {
+            "name": "Subjects",
+            "description": "Operações relacionadas a disciplinas"
+        }
+    ]
+}
