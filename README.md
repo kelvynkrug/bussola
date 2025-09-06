@@ -38,7 +38,27 @@ Sistema de gerenciamento escolar desenvolvido em Laravel com API RESTful para ge
     docker-compose up --build -d
     ```
 
-4. **Acesse a aplicação**
+4. **Configure o banco de dados**
+
+    # Execute as migrações para criar as tabelas
+
+    ```bash
+    docker-compose exec app php artisan migrate
+    ```
+
+    # Execute os seeders para popular o banco com dados iniciais
+
+    ```bash
+    docker-compose exec app php artisan db:seed
+    ```
+
+    # Execute os testes automatizados
+
+    ```bash
+    docker-compose exec app php artisan test
+    ```
+
+5. **Acesse a aplicação**
     - **API**: http://localhost:8000
     - **Documentação Swagger**: http://localhost:8000/api/documentation
     - **Mailpit (E-mails)**: http://localhost:8025
@@ -50,14 +70,6 @@ Sistema de gerenciamento escolar desenvolvido em Laravel com API RESTful para ge
 Para facilitar os testes da API, foi criada uma collection completa do Postman:
 
 **Arquivo**: `Bussola_API_Collection.postman_collection.json`
-
-## Testes
-
-Execute os testes automatizados:
-
-```bash
-docker-compose exec app php artisan test
-```
 
 ## Configuração de E-mail
 
