@@ -28,7 +28,7 @@ Sistema de gerenciamento escolar desenvolvido em Laravel com API RESTful para ge
 2. **Execute com Docker Compose**
 
     ```bash
-    docker-compose up --build
+    docker-compose up --build -d
     ```
 
 3. **Acesse a aplicação**
