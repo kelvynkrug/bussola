@@ -1,0 +1,542 @@
+{
+    "info": {
+        "_postman_id": "bussola-api-collection",
+        "name": "Bussola API",
+        "description": "Collection completa para testar as rotas da API do sistema de gerenciamento escolar",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "Cursos",
+            "item": [
+                {
+                    "name": "GETALL",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/courses",
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "courses"]
+                        }
+                    }
+                },
+                {
+                    "name": "CREATE",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"name\": \"Ciência da Computação\",\n    \"description\": \"Curso de graduação em Ciência da Computação\",\n    \"workload\": 3200\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/courses",
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "courses"]
+                        }
+                    }
+                },
+                {
+                    "name": "SEARCH",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/courses/1",
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "courses", "1"]
+                        }
+                    }
+                },
+                {
+                    "name": "UPDATE",
+                    "request": {
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"name\": \"Ciência da Computação - Atualizado\",\n    \"description\": \"Curso de graduação em Ciência da Computação - Descrição atualizada\",\n    \"workload\": 3400\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/courses/1",
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "courses", "1"]
+                        }
+                    }
+                },
+                {
+                    "name": "DELETE",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/courses/1",
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "courses", "1"]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Disciplinas",
+            "item": [
+                {
+                    "name": "GETALL",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/subjects",
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "subjects"]
+                        }
+                    }
+                },
+                {
+                    "name": "CREATE",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"name\": \"Programação Web\",\n    \"description\": \"Disciplina de programação para web\",\n    \"workload\": 80\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/subjects",
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "subjects"]
+                        }
+                    }
+                },
+                {
+                    "name": "SEARCH",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/subjects/1",
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "subjects", "1"]
+                        }
+                    }
+                },
+                {
+                    "name": "UPDATE",
+                    "request": {
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"name\": \"Programação Web - Atualizada\",\n    \"description\": \"Disciplina de programação para web - Descrição atualizada\",\n    \"workload\": 100\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/subjects/1",
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "subjects", "1"]
+                        }
+                    }
+                },
+                {
+                    "name": "DELETE",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/subjects/1",
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "subjects", "1"]
+                        }
+                    }
+                },
+                {
+                    "name": "ATTACH-COURSE",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"course_id\": 1\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/subjects/1/attach-course",
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "subjects", "1", "attach-course"]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Alunos",
+            "item": [
+                {
+                    "name": "GETALL",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/students",
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "students"]
+                        }
+                    }
+                },
+                {
+                    "name": "CREATE",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"name\": \"João Silva\",\n    \"cpf\": \"12345678901\",\n    \"birth_date\": \"1995-05-15\",\n    \"email\": \"joao.silva@email.com\",\n    \"course_ids\": [1]\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/students",
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "students"]
+                        }
+                    }
+                },
+                {
+                    "name": "SEARCH",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/students/1",
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "students", "1"]
+                        }
+                    }
+                },
+                {
+                    "name": "FIND-BY-CPF",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/students/cpf/12345678901",
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "students", "cpf", "12345678901"]
+                        }
+                    }
+                },
+                {
+                    "name": "UPDATE",
+                    "request": {
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"name\": \"João Silva Santos\",\n    \"cpf\": \"12345678901\",\n    \"birth_date\": \"1995-05-15\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/students/1",
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "students", "1"]
+                        }
+                    }
+                },
+                {
+                    "name": "DELETE",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/students/1",
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "students", "1"]
+                        }
+                    }
+                },
+                {
+                    "name": "ATTACH-COURSE",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"course_id\": 1\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/students/1/attach-course",
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "students", "1", "attach-course"]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Matrículas",
+            "item": [
+                {
+                    "name": "GETALL",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/enrollments",
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "enrollments"]
+                        }
+                    }
+                },
+                {
+                    "name": "CREATE",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"student_id\": 1,\n    \"course_id\": 1\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/enrollments",
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "enrollments"]
+                        }
+                    }
+                },
+                {
+                    "name": "SEARCH",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/enrollments/1",
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "enrollments", "1"]
+                        }
+                    }
+                },
+                {
+                    "name": "UPDATE",
+                    "request": {
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"status\": \"active\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/enrollments/1",
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "enrollments", "1"]
+                        }
+                    }
+                },
+                {
+                    "name": "DELETE",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/enrollments/1",
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "enrollments", "1"]
+                        }
+                    }
+                },
+                {
+                    "name": "SUSPEND",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/enrollments/1/suspend",
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "enrollments", "1", "suspend"]
+                        }
+                    }
+                },
+                {
+                    "name": "REACTIVATE",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/enrollments/1/reactivate",
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "enrollments", "1", "reactivate"]
+                        }
+                    }
+                }
+            ]
+        }
+    ],
+    "variable": [
+        {
+            "key": "base_url",
+            "value": "http://localhost:8000",
+            "type": "string"
+        }
+    ]
+}
