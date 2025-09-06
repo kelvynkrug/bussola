@@ -22,8 +22,7 @@ Sistema de gerenciamento escolar desenvolvido em Laravel com API RESTful para ge
 1. **Clone o repositório**
 
     ```bash
-    git clone
-    cd teste-bussola
+    git clone https://github.com/kelvynkrug/bussola.git
     ```
 
 2. **Execute com Docker Compose**
