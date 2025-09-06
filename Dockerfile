@@ -19,11 +19,15 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www
 
+COPY composer.json composer.lock ./
+
+RUN composer install --no-dev --optimize-autoloader --no-scripts
+
 COPY . /var/www
 
 COPY --chown=www-data:www-data . /var/www
 
-RUN composer install --no-dev --optimize-autoloader
+RUN composer run-script post-autoload-dump
 
 RUN touch /var/www/database/database.sqlite
 
