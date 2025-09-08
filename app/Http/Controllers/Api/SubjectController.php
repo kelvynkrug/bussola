@@ -55,7 +55,7 @@ class SubjectController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'FIND_SUCCESS',
+            'message' => 'SEARCH_SUCCESS',
             'data' => $subjects
         ]);
     }
@@ -174,7 +174,7 @@ class SubjectController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'FIND_SUCCESS',
+            'message' => 'SEARCH_SUCCESS',
             'data' => $subject
         ]);
     }

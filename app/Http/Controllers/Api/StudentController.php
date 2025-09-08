@@ -55,7 +55,7 @@ class StudentController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'FIND_SUCCESS',
+            'message' => 'SEARCH_SUCCESS',
             'data' => $students
         ]);
     }
@@ -175,7 +175,7 @@ class StudentController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'FIND_SUCCESS',
+            'message' => 'SEARCH_SUCCESS',
             'data' => $student
         ]);
     }
@@ -362,7 +362,7 @@ class StudentController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'FIND_SUCCESS',
+            'message' => 'SEARCH_SUCCESS',
             'data' => $student
         ]);
     }

@@ -14,7 +14,7 @@ use Illuminate\Validation\ValidationException;
 /**
  * @OA\Tag(name="Enrollments")
  */
-class EnrollmentController extends Controller
+class EnrollmentController extends BaseController
 {
     protected $enrollmentService;
 
@@ -84,7 +84,7 @@ class EnrollmentController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'FIND_SUCCESS',
+            'message' => 'SEARCH_SUCCESS',
             'data' => $enrollments
         ]);
     }
@@ -131,10 +131,7 @@ class EnrollmentController extends Controller
                 ->first();
 
             if ($existingEnrollment) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'CREATE_FAILED'
-                ], 422);
+                return $this->conflictResponse('Aluno já está matriculado neste curso', 'CREATE_FAILED');
             }
 
             $enrollment = $this->enrollmentService->enrollStudent(
@@ -142,17 +139,9 @@ class EnrollmentController extends Controller
                 $validated['course_id']
             );
 
-            return response()->json([
-                'success' => true,
-                'message' => 'CREATE_SUCCESS',
-                'data' => $enrollment
-            ], 201);
+            return $this->successResponse($enrollment, 'Aluno matriculado com sucesso', 'CREATE_SUCCESS', 201);
         } catch (ValidationException $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'CREATE_FAILED',
-                'errors' => $e->errors()
-            ], 422);
+            return $this->validationErrorResponse($e->errors(), 'Falha na matrícula devido a erros de validação', 'CREATE_FAILED');
         }
     }
 
@@ -196,7 +185,7 @@ class EnrollmentController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'FIND_SUCCESS',
+            'message' => 'SEARCH_SUCCESS',
             'data' => $enrollment
         ]);
     }
@@ -367,10 +356,7 @@ class EnrollmentController extends Controller
         }
 
         if ($enrollment->status === 'suspended') {
-            return response()->json([
-                'success' => false,
-                'message' => 'UPDATE_FAILED'
-            ], 422);
+            return $this->conflictResponse('Matrícula já está suspensa', 'UPDATE_FAILED');
         }
 
         $enrollment->update([
@@ -429,10 +415,7 @@ class EnrollmentController extends Controller
         }
 
         if ($enrollment->status !== 'suspended') {
-            return response()->json([
-                'success' => false,
-                'message' => 'UPDATE_FAILED'
-            ], 422);
+            return $this->conflictResponse('Apenas matrículas suspensas podem ser reativadas', 'UPDATE_FAILED');
         }
 
         $enrollment->update([

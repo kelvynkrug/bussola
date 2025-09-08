@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
 use App\Models\Course;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
@@ -11,7 +10,7 @@ use Illuminate\Validation\ValidationException;
 /**
  * @OA\Tag(name="Courses")
  */
-class CourseController extends Controller
+class CourseController extends BaseController
 {
     /**
      * @OA\Get(
@@ -37,11 +36,7 @@ class CourseController extends Controller
     {
         $courses = Course::with('subjects')->get();
 
-        return response()->json([
-            'success' => true,
-            'message' => 'FIND_SUCCESS',
-            'data' => $courses
-        ]);
+        return $this->successResponse($courses, 'Cursos recuperados com sucesso', 'SEARCH_SUCCESS');
     }
 
     /**
@@ -84,17 +79,9 @@ class CourseController extends Controller
 
             $course = Course::create($validated);
 
-            return response()->json([
-                'success' => true,
-                'message' => 'CREATE_SUCCESS',
-                'data' => $course
-            ], 201);
+            return $this->successResponse($course, 'Curso criado com sucesso', 'CREATE_SUCCESS', 201);
         } catch (ValidationException $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'CREATE_FAILED',
-                'errors' => $e->errors()
-            ], 422);
+            return $this->validationErrorResponse($e->errors(), 'Falha na criação do curso devido a erros de validação', 'CREATE_FAILED');
         }
     }
 
@@ -130,17 +117,10 @@ class CourseController extends Controller
         $course = Course::with('subjects', 'students')->find($id);
 
         if (!$course) {
-            return response()->json([
-                'success' => false,
-                'message' => 'FIND_NOTFOUND'
-            ], 404);
+            return $this->notFoundResponse('Curso', 'FIND_NOTFOUND');
         }
 
-        return response()->json([
-            'success' => true,
-            'message' => 'FIND_SUCCESS',
-            'data' => $course
-        ]);
+        return $this->successResponse($course, 'Curso recuperado com sucesso', 'SEARCH_SUCCESS');
     }
 
     /**
@@ -188,10 +168,7 @@ class CourseController extends Controller
             $course = Course::find($id);
 
             if (!$course) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'FIND_NOTFOUND'
-                ], 404);
+                return $this->notFoundResponse('Curso', 'FIND_NOTFOUND');
             }
 
             $validated = $request->validate([
@@ -202,17 +179,9 @@ class CourseController extends Controller
 
             $course->update($validated);
 
-            return response()->json([
-                'success' => true,
-                'message' => 'UPDATE_SUCCESS',
-                'data' => $course
-            ]);
+            return $this->successResponse($course, 'Curso atualizado com sucesso', 'UPDATE_SUCCESS');
         } catch (ValidationException $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'UPDATE_FAILED',
-                'errors' => $e->errors()
-            ], 422);
+            return $this->validationErrorResponse($e->errors(), 'Falha na atualização do curso devido a erros de validação', 'UPDATE_FAILED');
         }
     }
 
@@ -252,24 +221,15 @@ class CourseController extends Controller
         $course = Course::find($id);
 
         if (!$course) {
-            return response()->json([
-                'success' => false,
-                'message' => 'FIND_NOTFOUND'
-            ], 404);
+            return $this->notFoundResponse('Curso', 'FIND_NOTFOUND');
         }
 
         if ($course->enrollments()->exists()) {
-            return response()->json([
-                'success' => false,
-                'message' => 'DELETE_FAILED'
-            ], 422);
+            return $this->conflictResponse('Não é possível excluir o curso pois ele possui matrículas ativas. Remova todas as matrículas primeiro.', 'DELETE_FAILED');
         }
 
         $course->delete();
 
-        return response()->json([
-            'success' => true,
-            'message' => 'DELETE_SUCCESS'
-        ]);
+        return $this->successResponse(null, 'Curso excluído com sucesso', 'DELETE_SUCCESS');
     }
 }
